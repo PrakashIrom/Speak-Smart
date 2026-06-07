@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import com.prakash.speaksmart.navigation.AppNavHost
 import com.prakash.speaksmart.ui.speech.SpeechScreen
 import com.prakash.speaksmart.ui.theme.SpeakSmartTheme
 
@@ -17,9 +18,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SpeakSmartTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                   // SpeechScreen(modifier = Modifier.padding(innerPadding))
-                }
+               AppNavHost()
             }
         }
     }

@@ -30,7 +30,7 @@ class SpeechRecognizerRepositoryImpl(
             RecognizerIntent.EXTRA_LANGUAGE_MODEL,
             RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
         )
-        putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+        putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.ENGLISH)
         putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
     }
 
@@ -68,7 +68,8 @@ class SpeechRecognizerRepositoryImpl(
         _state.update {
             it.copy(
                 text = text,
-                isListening = false
+                isListening = false,
+                isFinalResult = true
             )
         }
     }
