@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -18,7 +20,28 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "OPENAI_API_KEY", "\"${project.findProperty("OPENAI_API_KEY")}\"")
+        val localProperties = Properties()
+        localProperties.load(rootProject.file("local.properties").inputStream())
+
+        val apiKey = localProperties.getProperty("OPENAI_API_KEY")
+
+        buildConfigField(
+            "String",
+            "OPENAI_API_KEY",
+            "\"$apiKey\""
+        )
+
+        buildConfigField(
+            "String",
+            "OPENAI_BASE_URL",
+            "\"https://api.openai.com/v1/\""
+        )
+
+        buildConfigField(
+            "String",
+            "OPENAI_MODEL",
+            "\"gpt-4.1-mini\""
+        )
     }
 
     buildTypes {
@@ -41,13 +64,15 @@ android {
         buildConfig = true
         compose = true
     }
+
 }
 
 dependencies {
     implementation("io.ktor:ktor-client-core:2.3.7")
     implementation("io.ktor:ktor-client-android:2.3.7")
     implementation("io.ktor:ktor-client-content-negotiation:2.3.7")
-    implementation("io.ktor:ktor-serialization-gson:2.3.7")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.7")
+    implementation("io.ktor:ktor-client-okhttp:2.3.7")
     implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
