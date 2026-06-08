@@ -1,6 +1,5 @@
-package com.prakash.speaksmart.ui.theme
+package com.prakash.speaksmart.presentation.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

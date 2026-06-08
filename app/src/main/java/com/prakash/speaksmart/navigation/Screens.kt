@@ -2,7 +2,7 @@ package com.prakash.speaksmart.navigation
 
 sealed class Screen(val route: String) {
 
-    data object Home : Screen("home")
+    data object Practice : Screen("practice")
 
     data object Speech : Screen("speech")
 

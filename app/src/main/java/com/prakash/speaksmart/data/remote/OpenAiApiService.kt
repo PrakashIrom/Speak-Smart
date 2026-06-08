@@ -6,11 +6,53 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 
 class OpenAiApiService(private val client: HttpClient) {
-    suspend fun postOpenAiResponse(request: OpenAiRequest): SpeechFeedbackResponse{
-        return client.post("responses"){
+    private val json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+    }
+
+    suspend fun postOpenAiResponse(
+        request: OpenAiRequest
+    ): SpeechFeedbackResponse {
+
+        val raw = client.post("responses") {
             setBody(request)
-        }.body<SpeechFeedbackResponse>()
+        }.bodyAsText()
+
+        val jsonElement = json.parseToJsonElement(raw)
+
+        val jsonString = jsonElement.jsonObject["output"]
+            ?.jsonArray
+            ?.firstOrNull()
+            ?.jsonObject
+            ?.get("content")
+            ?.jsonArray
+            ?.firstOrNull()
+            ?.jsonObject
+            ?.get("text")
+            ?.jsonPrimitive
+            ?.content
+
+        require(!jsonString.isNullOrBlank()) { "OpenAI output text block was empty or missing" }
+
+        val cleaned = cleanJson(jsonString)
+
+        return json.decodeFromString<SpeechFeedbackResponse>(cleaned)
+    }
+
+    private fun cleanJson(raw: String): String {
+        return raw
+            .trim()
+            .removePrefix("```json")
+            .removePrefix("```")
+            .removeSuffix("```")
+            .trim()
     }
 }

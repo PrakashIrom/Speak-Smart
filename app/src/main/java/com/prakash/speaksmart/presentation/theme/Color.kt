@@ -1,4 +1,4 @@
-package com.prakash.speaksmart.ui.theme
+package com.prakash.speaksmart.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

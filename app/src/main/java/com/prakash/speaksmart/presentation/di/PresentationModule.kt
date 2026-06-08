@@ -1,6 +1,6 @@
-package com.prakash.speaksmart.ui.di
+package com.prakash.speaksmart.presentation.di
 
-import com.prakash.speaksmart.ui.speech.SpeechViewModel
+import com.prakash.speaksmart.presentation.ui.SpeechViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
